@@ -1,17 +1,19 @@
-import { component$, useSignal, $ } from "@builder.io/qwik";
+import { component$, useSignal, $, useVisibleTask$, useContext } from "@builder.io/qwik";
 import { Button, TextArea } from "~/components/ui";
 import { HiPaperAirplaneSolid as SendIcon } from "@qwikest/icons/heroicons";
 
-import type { ChatMessage } from "~/components/chat";
 import { ChatBubble, ChatMessages } from "~/components/chat";
 import ErrorAlert from "~/components/ErrorAlert";
 
-import { useChat } from "~/services/useChat";
+import { useChat, ChatContext } from "~/composables/useChat";
+
 
 export default component$(() => {
 
+	const chatStore = useContext(ChatContext)
+	const { startConversation, saveCurrentConversation, setCurrentConversation } = useChat(chatStore)
+
 	const userInput = useSignal("");
-	const conversation = useSignal<ChatMessage[]>([]);
 	const messageBeingTyped = useSignal<string>("")
 
 	const clearUserInput = $(() => userInput.value = "")
@@ -22,10 +24,14 @@ export default component$(() => {
 	const showError = useSignal(false)
 
 	const addToConversation = $(({ as, content }: { as: 'user' | 'assistant', content: string }) => {
-		conversation.value = [...conversation.value, {
-			content,
-			role: as
-		}]
+		chatStore.currentConversation.messages.push({
+			role: as,
+			content
+		})
+	})
+
+	useVisibleTask$(async () => {
+		await setCurrentConversation([])
 	})
 
 	const handleSendMessage = $(async () => {
@@ -34,7 +40,7 @@ export default component$(() => {
 		await addToConversation({ as: 'user', content: userInput.value })
 		clearUserInput()
 		isFetching.value = true
-		const response = await useChat(conversation.value)
+		const response = await startConversation(chatStore.currentConversation.messages)
 		isFetching.value = false
 		for await (const item of response) {
 			if (typeof item === 'object' && item?.error) {
@@ -55,6 +61,7 @@ export default component$(() => {
 			return
 		}
 		await addToConversation({ as: 'assistant', content: messageBeingTyped.value })
+		await saveCurrentConversation()
 		clearNewMessage()
 	})
 
@@ -64,7 +71,7 @@ export default component$(() => {
 				<ErrorAlert show={showError.value}>
 					Whoops, Ollama is not responding
 				</ErrorAlert>
-				<ChatMessages conversation={conversation.value} />
+				<ChatMessages conversation={chatStore.currentConversation.messages} />
 				<div>
 					{showTypingEffect.value ?
 						<ChatBubble
