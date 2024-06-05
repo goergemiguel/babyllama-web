@@ -1,15 +1,15 @@
 import { useStore } from "@builder.io/qwik"
-import type { Conversation, ChatMessage } from "~/composables/useChat"
+import type { ChatThread } from "~/composables/useChat"
 
 export type UseChatStore = {
-    conversations: Conversation[]
-    currentConversation: Conversation
+    threads: ChatThread[]
+    visibleChat: ChatThread
 }
 
 export const useChatStore = () =>
     useStore<UseChatStore>({
-        conversations: [],
-        currentConversation: {
+        threads: [],
+        visibleChat: {
             createdAt: new Date().toISOString(),
             messages: [],
         },

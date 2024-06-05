@@ -11,7 +11,7 @@ export default component$((props: ErrorAlertProps) => {
 			{
 				props.show ?
 					<Alert.Root look="alert"
-						class="absolute bottom-4 left-4 w-96 shadow-b shadow transition duration-300 ease-in-out transform"
+						class="fixed w-96 top-4 right-8 w-shadow-b shadow transition duration-300 ease-in-out transform"
 					>
 						<Alert.Title>Error</Alert.Title>
 						<Alert.Description>

@@ -5,13 +5,13 @@ import { HiPaperAirplaneSolid as SendIcon } from "@qwikest/icons/heroicons";
 import { ChatBubble, ChatMessages } from "~/components/chat";
 import ErrorAlert from "~/components/ErrorAlert";
 
-import { useChat, ChatContext } from "~/composables/useChat";
+import { useChat, ChatStoreContext } from "~/composables/useChat";
 
 
 export default component$(() => {
 
-	const chatStore = useContext(ChatContext)
-	const { startConversation, saveCurrentConversation, setCurrentConversation } = useChat(chatStore)
+	const chatStore = useContext(ChatStoreContext)
+	const { startChat, saveChat, setVisibleChat } = useChat(chatStore)
 
 	const userInput = useSignal("");
 	const messageBeingTyped = useSignal<string>("")
@@ -24,14 +24,17 @@ export default component$(() => {
 	const showError = useSignal(false)
 
 	const addToConversation = $(({ as, content }: { as: 'user' | 'assistant', content: string }) => {
-		chatStore.currentConversation.messages.push({
+		chatStore.visibleChat.messages.push({
 			role: as,
 			content
 		})
 	})
 
 	useVisibleTask$(async () => {
-		await setCurrentConversation([])
+		await setVisibleChat({
+			createdAt: new Date().toISOString(),
+			messages: []
+		})
 	})
 
 	const handleSendMessage = $(async () => {
@@ -40,7 +43,7 @@ export default component$(() => {
 		await addToConversation({ as: 'user', content: userInput.value })
 		clearUserInput()
 		isFetching.value = true
-		const response = await startConversation(chatStore.currentConversation.messages)
+		const response = await startChat(chatStore.visibleChat.messages)
 		isFetching.value = false
 		for await (const item of response) {
 			if (typeof item === 'object' && item?.error) {
@@ -61,17 +64,14 @@ export default component$(() => {
 			return
 		}
 		await addToConversation({ as: 'assistant', content: messageBeingTyped.value })
-		await saveCurrentConversation()
+		await saveChat()
 		clearNewMessage()
 	})
 
 	return (
-		<div class="py-4 px-16 w-full h-screen flex flex-col justify-between">
-			<div>
-				<ErrorAlert show={showError.value}>
-					Whoops, Ollama is not responding
-				</ErrorAlert>
-				<ChatMessages conversation={chatStore.currentConversation.messages} />
+		<div class="w-full h-screen flex flex-col justify-between relative">
+			<div class="overflow-y-scroll px-16 pt-8 pb-28">
+				<ChatMessages conversation={chatStore.visibleChat.messages} />
 				<div>
 					{showTypingEffect.value ?
 						<ChatBubble
@@ -83,12 +83,15 @@ export default component$(() => {
 					}
 				</div>
 			</div>
-			<div class="flex">
+			<div class="flex absolute bottom-0 left-0 right-0 px-16 py-4 bg-white z-99">
 				<TextArea class="w-full mr-2" bind:value={userInput} placeholder="Send Message" disabled={showTypingEffect.value} />
 				<Button class="px-8" onClick$={handleSendMessage} disabled={showTypingEffect.value}>
 					<SendIcon class="text-white animate-bounce" />
 				</Button>
 			</div>
+			<ErrorAlert show={showError.value}>
+				Whoops, Ollama is not responding
+			</ErrorAlert>
 		</div >
 	)
 })

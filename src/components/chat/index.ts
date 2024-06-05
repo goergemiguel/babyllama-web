@@ -1,6 +1,6 @@
 import ChatMessages from "./ChatMessages"
 import ChatBubble from "./ChatBubble"
-import ConversationThread from "./ConversationThread"
-import ConversationPicker from "./ConversationPicker"
+import ChatThread from "./ChatThread"
+import ChatPicker from "./ChatPicker"
 
-export { ChatMessages, ChatBubble, ConversationThread, ConversationPicker }
+export { ChatMessages, ChatBubble, ChatThread, ChatPicker }

@@ -7,17 +7,15 @@ export interface ChatMessage {
     role: string
 }
 
-export type Conversation = {
+export type ChatThread = {
     createdAt: string
     messages: ChatMessage[]
 }
 
-export const ChatContext = createContextId<UseChatStore>("chatContext")
+export const ChatStoreContext = createContextId<UseChatStore>("chatContext")
 
 export const useChat = (chatStore: UseChatStore) => {
-    const startConversation = server$(async function* (
-        messages: ChatMessage[]
-    ) {
+    const startChat = server$(async function* (messages: ChatMessage[]) {
         const apiUrl = import.meta.env.PUBLIC_API_URL
         const data = {
             model: "llama3",
@@ -48,43 +46,42 @@ export const useChat = (chatStore: UseChatStore) => {
         }
     })
 
-    const saveCurrentConversation = $(() => {
-        console.log(chatStore.conversations)
-        const currentConversation = chatStore.currentConversation
-        const found = chatStore.conversations.find(
-            (c) => c.createdAt === currentConversation.createdAt
+    const saveChat = $(() => {
+        const visibleChat = chatStore.visibleChat
+        const found = chatStore.threads.find(
+            (c) => c.createdAt === visibleChat.createdAt
         )
         if (found) {
-            found.messages = currentConversation.messages
+            found.messages = visibleChat.messages
         } else {
-            chatStore.conversations.push(currentConversation)
+            chatStore.threads.push(visibleChat)
         }
         localStorage.setItem(
-            "conversations",
-            JSON.stringify(chatStore.conversations)
+            "babyllama_threads",
+            JSON.stringify(chatStore.threads)
         )
     })
 
-    const loadAllConversations = $(() => {
-        console.log("loading")
-        const allChats = localStorage.getItem("conversations")
+    const loadAllChat = $(() => {
+        const allChats = localStorage.getItem("babyllama_threads")
         if (allChats) {
-            chatStore.conversations = JSON.parse(allChats)
+            const parsed: ChatThread[] = JSON.parse(allChats)
+            chatStore.threads = parsed
         }
     })
 
-    const setCurrentConversation = $((messages: ChatMessage[]) => {
-        chatStore.currentConversation = {
-            createdAt: new Date().toISOString(),
-            messages,
+    const setVisibleChat = $((thread: ChatThread) => {
+        chatStore.visibleChat = {
+            createdAt: thread.createdAt,
+            messages: thread.messages,
         }
     })
 
     return {
-        startConversation,
-        saveCurrentConversation,
-        loadAllConversations,
-        setCurrentConversation,
+        startChat,
+        saveChat,
+        loadAllChat,
+        setVisibleChat,
     }
 }
 
