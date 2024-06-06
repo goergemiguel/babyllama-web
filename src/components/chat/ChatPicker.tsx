@@ -1,6 +1,6 @@
-import { component$, useVisibleTask$, useComputed$, useContext, $, useTask$, useSignal } from "@builder.io/qwik";
-import { Input, } from "~/components/ui";
-import { HiPlusOutline as NewIcon } from "@qwikest/icons/heroicons";
+import { component$, useComputed$, useContext, $, useOnDocument } from "@builder.io/qwik";
+import { Input } from "~/components/ui";
+import { HiChatBubbleLeftEllipsisSolid as NewIcon, HiCog6ToothSolid as SettingsIcon, HiSunSolid as SunIcon, HiMoonSolid as MoonIcon } from "@qwikest/icons/heroicons";
 
 import { useChat, type ChatThread } from "~/composables/useChat";
 import { ChatStoreContext } from "~/composables/useChat";
@@ -17,9 +17,10 @@ export default component$(() => {
 		return clone.sort((a, b) => dayjs(b.createdAt).valueOf() - dayjs(a.createdAt).valueOf())
 	})
 
-	useVisibleTask$(async () => {
+
+	useOnDocument("qinit", $(async () => {
 		await loadAllChat()
-	})
+	}))
 
 	const handleClickListItem = $(async (thread: ChatThread) => {
 		await setVisibleChat(thread)
@@ -33,12 +34,15 @@ export default component$(() => {
 	})
 
 	return (
-		<div class="w-[300px] border-r h-screen flex flex-col">
+		<div class="w-[350px] border-r h-screen flex flex-col">
 			<div class="flex justify-between items-center px-4 pt-4">
 				<p class="font-bold">
 					Threads
 				</p>
-				<NewIcon class="w-6 h-auto cursor-pointer text-primary" onClick$={handleStartNewChat} />
+				<div class="flex">
+					<SunIcon class="w-6 h-auto cursor-pointer text-primary mr-2" />
+					<NewIcon class="w-6 h-auto cursor-pointer text-primary" onClick$={handleStartNewChat} />
+				</div>
 			</div>
 			<div class="px-4">
 				<Input placeholder="Search" class="mt-4" />
@@ -54,6 +58,9 @@ export default component$(() => {
 					</div> :
 					<EmptyList />
 			}
+			<div class="flex justify-center px-4 py-4">
+				<SettingsIcon class="w-8 h-auto cursor-pointer text-primary mr-2" />
+			</div>
 		</div>
 	)
 })
@@ -64,7 +71,7 @@ const ThreadListItem = (props: { thread: ChatThread, index: number, onClick: (th
 		props.onClick(thread)
 	})
 	return (
-		<article class="p-4 mx-4 hover:bg-gray-50 cursor-pointer rounded-lg mt-4" key={thread.createdAt} onClick$={handleClickListItem}>
+		<article class="p-4 mx-4 hover:bg-gray-50 cursor-pointer rounded-lg mt-2" key={thread.createdAt} onClick$={handleClickListItem}>
 			<label class="font-bold text-sm truncate">{thread.messages[0].content}</label>
 			<p class="text-gray-500 text-sm line-clamp-1">{thread.messages[thread.messages.length - 1].content}</p>
 			<span class="text-gray-500 text-xs">

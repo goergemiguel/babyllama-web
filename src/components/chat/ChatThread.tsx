@@ -1,4 +1,4 @@
-import { component$, useSignal, $, useVisibleTask$, useContext } from "@builder.io/qwik";
+import { component$, useSignal, $, useContext, useOnDocument } from "@builder.io/qwik";
 import { Button, TextArea } from "~/components/ui";
 import { HiPaperAirplaneSolid as SendIcon } from "@qwikest/icons/heroicons";
 
@@ -30,12 +30,12 @@ export default component$(() => {
 		})
 	})
 
-	useVisibleTask$(async () => {
+	useOnDocument("qinit", $(async () => {
 		await setVisibleChat({
 			createdAt: new Date().toISOString(),
 			messages: []
 		})
-	})
+	}))
 
 	const handleSendMessage = $(async () => {
 		if (!userInput.value) return
