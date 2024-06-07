@@ -14,8 +14,8 @@ export default component$((props: ChatBubbleProps) => {
 			<p
 				key={props.index}
 				class={`p-8 w-2/3 mb-1 text-sm ${props.message.role == 'user' ?
-					'bg-primary text-white rounded-tl-xl rounded-tr-xl rounded-bl-xl'
-					: 'bg-white border border-gray-200 text-gray-800 rounded-tr-xl rounded-br-xl rounded-tl-xl '}`}
+					'bg-primary dark:bg-gray-800 text-white rounded-tl-xl rounded-tr-xl rounded-bl-xl'
+					: 'bg-white dark:bg-gray-400 border border-gray-200 dark:border-gray-400 text-gray-800 rounded-tr-xl rounded-br-xl rounded-tl-xl '}`}
 			>
 				{props?.loading ? <LoadingIcon class="w-6 h-6 animate-spin" /> : props.message.content}
 			</p>

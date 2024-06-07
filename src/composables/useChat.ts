@@ -46,7 +46,7 @@ export const useChat = (chatStore: UseChatStore) => {
         }
     })
 
-    const saveChat = $(() => {
+    const saveChatToLocalStorage = $(() => {
         const visibleChat = chatStore.visibleChat
         const found = chatStore.threads.find(
             (c) => c.createdAt === visibleChat.createdAt
@@ -62,7 +62,7 @@ export const useChat = (chatStore: UseChatStore) => {
         )
     })
 
-    const loadAllChat = $(() => {
+    const loadAllChatFromLocalStorage = $(() => {
         const allChats = localStorage.getItem("babyllama_threads")
         if (allChats) {
             const parsed: ChatThread[] = JSON.parse(allChats)
@@ -79,8 +79,8 @@ export const useChat = (chatStore: UseChatStore) => {
 
     return {
         startChat,
-        saveChat,
-        loadAllChat,
+        saveChatToLocalStorage,
+        loadAllChatFromLocalStorage,
         setVisibleChat,
     }
 }
