@@ -1,4 +1,5 @@
-import { component$, useSignal, $, useContext, useOnDocument } from "@builder.io/qwik";
+import { component$, useSignal, $, useContext, useTask$, useOnDocument } from "@builder.io/qwik";
+import { isBrowser } from "@builder.io/qwik/build"
 import { Button, TextArea } from "~/components/ui";
 import { HiPaperAirplaneSolid as SendIcon } from "@qwikest/icons/heroicons";
 
@@ -37,6 +38,23 @@ export default component$(() => {
 		})
 	}))
 
+	const scrollToBottom = $(() => {
+		const container = document.getElementById('messages-container');
+		if (container) {
+			setTimeout(() => {
+				container.scrollTop = container.scrollHeight;
+			}, 50)
+		}
+	})
+
+	useTask$(async ({ track }) => {
+		track(() => chatStore.visibleChat)
+		if (isBrowser) {
+			await scrollToBottom()
+		}
+	})
+
+
 	const handleSendMessage = $(async () => {
 		if (!userInput.value) return
 		showTypingEffect.value = true
@@ -58,7 +76,7 @@ export default component$(() => {
 			}
 		}
 		showTypingEffect.value = false
-		// TODO: scroll to bottom of the screen when new message is added
+		await scrollToBottom()
 		if (!messageBeingTyped.value) {
 			showError.value = true
 			clearNewMessage()
@@ -71,7 +89,7 @@ export default component$(() => {
 
 	return (
 		<div class="w-full h-screen flex flex-col justify-between relative bg-white dark:bg-primary">
-			<div class="overflow-y-scroll px-16 pt-8 pb-28">
+			<div id="messages-container" class="overflow-y-scroll px-16 pt-8 pb-28">
 				<ChatMessages conversation={chatStore.visibleChat.messages} />
 				<div>
 					{showTypingEffect.value ?

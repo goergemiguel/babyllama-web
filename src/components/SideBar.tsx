@@ -1,4 +1,4 @@
-import { component$, useComputed$, useContext, $, useOnDocument, useSignal } from "@builder.io/qwik";
+import { component$, useComputed$, useContext, $, useOnDocument } from "@builder.io/qwik";
 import { Input } from "~/components/ui";
 import { HiChatBubbleLeftEllipsisSolid as NewIcon, HiCog6ToothSolid as SettingsIcon, HiSunSolid as SunIcon, HiMoonSolid as MoonIcon } from "@qwikest/icons/heroicons";
 import { ChatThreadListItem } from "~/components/chat";
@@ -41,7 +41,7 @@ export default component$(() => {
 	})
 
 	return (
-		<div class="w-[350px] border-r h-screen flex flex-col bg-white dark:bg-primary">
+		<div class="md:max-w-[320px] 2xl:max-w-[650px] border-r h-screen flex flex-col bg-white dark:bg-primary">
 			<div class="flex justify-between items-center px-4 pt-4">
 				<p class="font-bold text-gray-800 dark:text-white">
 					History
