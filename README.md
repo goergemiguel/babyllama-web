@@ -12,5 +12,5 @@ A UI wrapper for ollama made using Qwik
 - [ ] Format generated response, make it look pretty.
 
 ## Screenshots
-![Screenshot 2024-06-08 at 12 20 30 AM](https://github.com/goergemiguel/babyllama-web/assets/30315323/b2c744c9-5558-48f8-a8ec-e15849d72579)
-![Screenshot 2024-06-08 at 12 20 16 AM](https://github.com/goergemiguel/babyllama-web/assets/30315323/4ab33d0a-1d0a-454a-864e-31ec6774cc13)
+![Screenshot 2024-06-08 at 12 22 22 AM](https://github.com/goergemiguel/babyllama-web/assets/30315323/dcf3bf68-b758-4104-9278-78709ad39382)
+![Screenshot 2024-06-08 at 12 22 09 AM](https://github.com/goergemiguel/babyllama-web/assets/30315323/2cccbde3-7a27-411a-8760-add8ca8eb380)
