@@ -5,11 +5,14 @@ import {
     useContext,
 } from "@builder.io/qwik"
 
-export const createGlobalStore = <T>(storeName: string, initialState: T) => {
+export const createGlobalStore = <T extends object>(
+    storeName: string,
+    initialState: T
+) => {
     const StoreContext = createContextId<T>(storeName)
     const store = useStore<T>(initialState)
     return {
         useProvider: () => useContextProvider<T>(StoreContext, store),
-        useStore: () => useContext(StoreContext),
+        useStore: () => useContext<T>(StoreContext),
     }
 }
