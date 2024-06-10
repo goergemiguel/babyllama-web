@@ -90,7 +90,7 @@ export default component$(() => {
 
 	return (
 		<div class="w-full h-screen flex flex-col justify-between relative bg-white dark:bg-primary">
-			<div id="messages-container" class="overflow-y-scroll px-16 pt-8 pb-28">
+			<div id="messages-container" class="overflow-y-scroll pt-8 pb-28">
 				<ChatMessages conversation={chatStore.visibleChat.messages} />
 				<div>
 					{showTypingEffect.value ?
