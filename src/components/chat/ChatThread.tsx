@@ -1,4 +1,4 @@
-import { component$, useSignal, $, useContext, useTask$, useOnDocument } from "@builder.io/qwik";
+import { component$, useSignal, $, useTask$, useOnDocument } from "@builder.io/qwik";
 import { isBrowser } from "@builder.io/qwik/build"
 import { Button, TextArea } from "~/components/ui";
 import { HiPaperAirplaneSolid as SendIcon } from "@qwikest/icons/heroicons";
@@ -6,12 +6,13 @@ import { HiPaperAirplaneSolid as SendIcon } from "@qwikest/icons/heroicons";
 import { ChatBubble, ChatMessages } from "~/components/chat";
 import ErrorAlert from "~/components/ErrorAlert";
 
-import { useChat, ChatStoreContext } from "~/composables/useChat";
+import { useChat } from "~/composables/useChat";
+import { useChatStore } from "~/stores/chatStore";
 
 
 export default component$(() => {
 
-	const chatStore = useContext(ChatStoreContext)
+	const chatStore = useChatStore()
 	const { startChat, saveChatToLocalStorage, setVisibleChat } = useChat(chatStore)
 
 	const userInput = useSignal("");

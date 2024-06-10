@@ -1,12 +1,12 @@
-import { component$, useContext, useComputed$ } from "@builder.io/qwik"
-import { ThemeStoreContext } from "~/composables/useTheme"
+import { component$, useComputed$ } from "@builder.io/qwik"
 import { HiSunSolid as SunIcon, HiMoonSolid as MoonIcon } from "@qwikest/icons/heroicons";
 import { useTheme } from "~/composables/useTheme";
 import IconButton from "./IconButton";
+import { useThemeStore } from "~/stores/themeStore";
 
 export default component$(() => {
 
-	const themeStore = useContext(ThemeStoreContext)
+	const themeStore = useThemeStore()
 	const { setTheme } = useTheme(themeStore)
 
 	const currentTheme = useComputed$(() => {
@@ -24,7 +24,6 @@ export default component$(() => {
 					</IconButton> :
 					<IconButton
 						onClick$={async () => await setTheme('light')}
-						class="dark:hover:bg-gray-800"
 					>
 						<MoonIcon
 							class="w-6 h-auto cursor-pointer text-white"

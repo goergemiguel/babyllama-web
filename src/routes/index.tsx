@@ -2,22 +2,18 @@ import { component$, useContextProvider, useOnDocument, $ } from "@builder.io/qw
 import { DocumentHead, } from "@builder.io/qwik-city";
 import { ChatThread } from "~/components/chat";
 import SideBar from "~/components/SideBar";
-import { useChatStore } from "~/stores/chatStore";
-import { ChatStoreContext } from "~/composables/useChat";
 import { useTheme } from "~/composables/useTheme";
-import { useThemeStore } from "~/stores/themeStore";
-import { ThemeStoreContext } from "~/composables/useTheme";
+import { useChatStoreContextProvider } from "~/stores/chatStore";
+import { useThemeStoreContextProvider, useThemeStore } from "~/stores/themeStore";
 
 
 export default component$(() => {
-	const chatStore = useChatStore()
-	const themeStore = useThemeStore()
-
 
 	// provide chat store to all children components
-	useContextProvider(ChatStoreContext, chatStore)
-	useContextProvider(ThemeStoreContext, themeStore)
+	useChatStoreContextProvider()
+	useThemeStoreContextProvider()
 
+	const themeStore = useThemeStore()
 	const { loadCurrentTheme } = useTheme(themeStore)
 
 	// load theme dark or light mode from local storage

@@ -1,10 +1,11 @@
-import { component$, useContext, $ } from "@builder.io/qwik"
+import { component$, $ } from "@builder.io/qwik"
 import IconButton from "../IconButton"
 import { HiChatBubbleLeftEllipsisSolid as NewIcon } from "@qwikest/icons/heroicons";
-import { useChat, ChatStoreContext } from "~/composables/useChat";
+import { useChat } from "~/composables/useChat";
+import { useChatStore } from "~/stores/chatStore";
 
 export default component$(() => {
-	const chatStore = useContext(ChatStoreContext)
+	const chatStore = useChatStore()
 	const { setVisibleChat } = useChat(chatStore)
 
 	const handleStartNewChat = $(() => {

@@ -1,7 +1,5 @@
-import { $, createContextId } from "@builder.io/qwik"
+import { $ } from "@builder.io/qwik"
 import { UseThemeStore } from "~/stores/themeStore"
-
-export const ThemeStoreContext = createContextId<UseThemeStore>("theme")
 
 export const useTheme = (store: UseThemeStore) => {
     const setTheme = $((theme: "light" | "dark") => {

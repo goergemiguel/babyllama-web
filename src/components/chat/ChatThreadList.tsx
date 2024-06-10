@@ -1,12 +1,13 @@
-import { component$, $, useComputed$, useContext, useOnDocument } from "@builder.io/qwik"
+import { component$, $, useComputed$, useOnDocument } from "@builder.io/qwik"
 import dayjs from "dayjs"
-import { type ChatThread, ChatStoreContext, useChat } from "~/composables/useChat"
+import { type ChatThread, useChat } from "~/composables/useChat"
+import { useChatStore } from "~/stores/chatStore"
 
 
 export default component$(
 	() => {
 
-		const chatStore = useContext(ChatStoreContext)
+		const chatStore = useChatStore()
 		const { loadAllChatFromLocalStorage, setVisibleChat } = useChat(chatStore)
 
 		const threads = useComputed$(() => {
