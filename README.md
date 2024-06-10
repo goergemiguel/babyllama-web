@@ -9,7 +9,8 @@ A UI wrapper for ollama made using Qwik
 - [ ] List Running Model
 - [ ] Model Management: Pull new Model, List Local Models, Delete Model
 - [ ] Model Management: Use New Model,
-- [ ] Format generated response, make it look pretty.
+- [x] Format generated response, make it look pretty.
+- [ ] Format code blocks from response
 
 ## Screenshots
 ![Screenshot 2024-06-08 at 12 22 22 AM](https://github.com/goergemiguel/babyllama-web/assets/30315323/dcf3bf68-b758-4104-9278-78709ad39382)
