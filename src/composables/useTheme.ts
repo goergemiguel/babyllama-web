@@ -16,10 +16,23 @@ export const useTheme = (store: UseThemeStore) => {
             document.documentElement.className = theme
             document.documentElement.setAttribute("data-color-scheme", theme)
         }
+        const isCollapsedSideBar = localStorage.getItem("isCollapsedSideBar")
+        if (isCollapsedSideBar === "true") {
+            store.isCollapsedSideBar = true
+        }
+    })
+
+    const toggleSideBar = $(() => {
+        store.isCollapsedSideBar = !store.isCollapsedSideBar
+        localStorage.setItem(
+            "isCollapsedSideBar",
+            String(store.isCollapsedSideBar)
+        )
     })
 
     return {
         setTheme,
         loadCurrentTheme,
+        toggleSideBar,
     }
 }

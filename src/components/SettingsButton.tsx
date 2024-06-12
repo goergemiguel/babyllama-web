@@ -7,7 +7,7 @@ export default component$(() => {
 	return (
 		<IconButton
 		>
-			<SettingsIcon class="w-8 h-auto cursor-pointer text-primary dark:text-white mr-2" />
+			<SettingsIcon class="w-6 h-auto cursor-pointer text-primary dark:text-white" />
 		</IconButton>
 	)
 })

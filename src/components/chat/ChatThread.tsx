@@ -92,7 +92,7 @@ export default component$(() => {
 		<div class="w-full h-screen flex flex-col justify-between relative bg-white dark:bg-primary">
 			<div id="messages-container" class="overflow-y-scroll pt-8 pb-28">
 				<ChatMessages conversation={chatStore.visibleChat.messages} />
-				<div>
+				<div class="max-w-3xl mx-auto">
 					{showTypingEffect.value ?
 						<ChatBubble
 							message={{ content: messageBeingTyped.value, role: 'assistant' }}
