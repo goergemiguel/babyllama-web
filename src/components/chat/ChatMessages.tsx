@@ -1,5 +1,5 @@
 import { component$ } from "@builder.io/qwik";
-import type { ChatMessage } from "./types";
+import type { ChatMessage } from "~/composables/useChat";
 
 import ChatBubble from "./ChatBubble";
 
