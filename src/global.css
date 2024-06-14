@@ -11,6 +11,33 @@
 }
 
 @layer base {
+
+	#chat_bubble p,
+	#chat_bubble ol,
+	#chat_bubble ul,
+	#chat_bubble li,
+	#chat_bubble h1,
+	#chat_bubble h2,
+	#chat_bubble h3,
+	#chat_bubble h4,
+	#chat_bubble h5,
+	#chat_bubble h6,
+	#chat_bubble pre {
+		@apply first:mt-0 mt-4
+	}
+
+	#chat_bubble ol {
+		@apply list-decimal
+	}
+
+	#chat_bubble ul {
+		@apply list-disc
+	}
+
+	#chat_bubble li {
+		@apply ml-4
+	}
+
 	:root {
 		--background: 0 0% 100%;
 		--foreground: 240 5.9% 10%;

@@ -10,7 +10,7 @@ A UI wrapper for ollama made using Qwik
 - [ ] Model Management: Pull new Model, List Local Models, Delete Model
 - [ ] Model Management: Use New Model,
 - [x] Format generated response, make it look pretty.
-- [ ] Format code blocks from response
+- [x] Format code blocks from response
 - [ ] Clear History / Delete Chat
 - [ ] Copy to Clipboard
 

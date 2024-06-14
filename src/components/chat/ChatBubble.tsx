@@ -4,7 +4,6 @@ import { LuLoader2 as LoadingIcon } from "@qwikest/icons/lucide"
 import { useChat } from "~/composables/useChat"
 import { useChatStore } from "~/stores/chatStore"
 
-
 interface ChatBubbleProps {
 	message: ChatMessage
 	index: number
@@ -21,7 +20,7 @@ export default component$((props: ChatBubbleProps) => {
 	})
 
 	return (
-		<div class={`flex flex-col mb-4 ${props.message.role == 'user' ? 'items-end' : 'items-start'}`}>
+		<div id="chat_bubble" class={`flex flex-col mb-4 ${props.message.role == 'user' ? 'items-end' : 'items-start'}`}>
 			<p
 				key={props.index}
 				class={`p-8 w-2/3 mb-1 text-sm ${props.message.role == 'user' ?

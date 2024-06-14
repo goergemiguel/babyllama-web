@@ -1,6 +1,9 @@
 import { server$ } from "@builder.io/qwik-city"
-import { $, createContextId } from "@builder.io/qwik"
+import { $ } from "@builder.io/qwik"
 import { UseChatStore } from "~/stores/chatStore"
+import hljs from "highlight.js"
+import { Marked } from "marked"
+import { markedHighlight } from "marked-highlight"
 
 export interface ChatMessage {
     content: string
@@ -75,46 +78,39 @@ export const useChat = (chatStore: UseChatStore) => {
         }
     })
 
-    const formatMessageToHTML = $((response: string): string => {
-        const lines = response.trim().split("\n")
-        let html = "<p>"
-        let inOrderedList = false
-        if (lines && lines.length === 0) return ""
-        lines.forEach((line) => {
-            line = line.trim()
+    // when codeblock has no language, hljs class is not added
+    const addHljsClassToCodeTags = $((html: string): string => {
+        // Create a DOM parser
+        const parser = new DOMParser()
+        const doc = parser.parseFromString(html, "text/html")
 
-            // Convert **text** to <strong>text</strong>
-            line = line.replace(/\*\*(.+?)\*\*/g, "<strong>$1</strong>")
+        // Get all <code> elements
+        const codeElements = doc.querySelectorAll("code")
 
-            // Check if the line starts with a number followed by a period (for ordered list items)
-            if (/^\d+\.\s/.test(line)) {
-                if (!inOrderedList) {
-                    html += "<ol>"
-                    inOrderedList = true
-                }
-                html += `<br><li>${line}</li>`
-            } else if (/^\*\s\d+\./.test(line)) {
-                // If it's a sub-list item, wrap it in <li> tags with no bullet
-                html += `<br><li>${line.slice(2)}</li>`
-            } else if (/^\*\s/.test(line)) {
-                // If it starts with * but no number, treat it as a normal list item
-                html += `<br><li style="list-style-type: disc; margin-left: 20px">${line.slice(2)}</li>`
-            } else if (line === "") {
-                if (inOrderedList) {
-                    html += "</ol>"
-                    inOrderedList = false
-                }
-                html += "</p><p><br>"
-            } else {
-                html += `${line}<br>`
+        // Iterate over each <code> element
+        codeElements.forEach((codeElement) => {
+            const classList = codeElement.classList
+            if (!classList.contains("hljs")) {
+                classList.add("hljs")
             }
         })
 
-        if (inOrderedList) {
-            html += "</ol>"
-        }
-        html += "</p>"
-        return html
+        // Serialize the document back to an HTML string
+        return doc.documentElement.outerHTML
+    })
+
+    const formatMessageToHTML = $(async (response: string): Promise<string> => {
+        const marked = new Marked(
+            markedHighlight({
+                async: true,
+                langPrefix: "hljs language-",
+                highlight(code, lang, info) {
+                    return hljs.highlightAuto(code).value
+                },
+            })
+        )
+        const html = await marked.parse(response)
+        return addHljsClassToCodeTags(html)
     })
 
     return {

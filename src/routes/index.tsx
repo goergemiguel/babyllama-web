@@ -14,10 +14,11 @@ export default component$(() => {
 	useThemeStoreContextProvider()
 
 	const themeStore = useThemeStore()
-	const { loadCurrentTheme } = useTheme(themeStore)
+	const { loadCurrentTheme, initializeHighlightJSTheme } = useTheme(themeStore)
 
 	// load theme dark or light mode from local storage
 	useOnDocument("qinit", $(async () => {
+		await initializeHighlightJSTheme()
 		await loadCurrentTheme()
 	}))
 	return (
