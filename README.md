@@ -1,5 +1,5 @@
 # Babyllama-web
-A UI wrapper for ollama made using Qwik
+A UI for ollama made using Qwik
 
 ## Todos
 
