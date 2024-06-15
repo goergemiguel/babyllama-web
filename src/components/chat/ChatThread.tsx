@@ -47,7 +47,7 @@ export default component$(() => {
 		const response = await startChat(chatStore.visibleChat.messages)
 		isFetching.value = false
 		for await (const item of response) {
-			if (typeof item === 'object' && item?.error) {
+			if (typeof item === 'object') {
 				showError.value = true
 				break;
 			}
@@ -77,7 +77,6 @@ export default component$(() => {
 					{showTypingEffect.value ?
 						<ChatBubble
 							message={{ content: messageBeingTyped.value, role: 'assistant' }}
-							index={1}
 							loading={isFetching.value}
 						/>
 						: null

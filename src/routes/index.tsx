@@ -1,4 +1,4 @@
-import { component$, useContextProvider, useOnDocument, $ } from "@builder.io/qwik";
+import { component$, useOnDocument, $ } from "@builder.io/qwik";
 import { DocumentHead, } from "@builder.io/qwik-city";
 import { ChatThread } from "~/components/chat";
 import SideBar from "~/components/SideBar";
@@ -14,12 +14,11 @@ export default component$(() => {
 	useThemeStoreContextProvider()
 
 	const themeStore = useThemeStore()
-	const { loadCurrentTheme, initializeHighlightJSTheme } = useTheme(themeStore)
+	const { loadCurrentAppTheme } = useTheme(themeStore)
 
 	// load theme dark or light mode from local storage
 	useOnDocument("qinit", $(async () => {
-		await initializeHighlightJSTheme()
-		await loadCurrentTheme()
+		await loadCurrentAppTheme()
 	}))
 	return (
 		<div class="flex w-full">

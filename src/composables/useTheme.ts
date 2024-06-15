@@ -41,7 +41,7 @@ export const useTheme = (store: UseThemeStore) => {
         }
     })
 
-    const setTheme = $((theme: "light" | "dark") => {
+    const setAppTheme = $((theme: "light" | "dark") => {
         store.currentTheme = theme
         localStorage.setItem("theme", theme)
         document.documentElement.className = theme
@@ -49,7 +49,7 @@ export const useTheme = (store: UseThemeStore) => {
         updateHighlightTheme(theme)
     })
 
-    const loadCurrentTheme = $(() => {
+    const initializeAppTheme = $(() => {
         const theme = localStorage.getItem("theme")
         if (theme === "light" || theme === "dark") {
             store.currentTheme = theme
@@ -63,6 +63,11 @@ export const useTheme = (store: UseThemeStore) => {
         }
     })
 
+    const loadCurrentAppTheme = $(async () => {
+        await initializeHighlightJSTheme()
+        await initializeAppTheme()
+    })
+
     const toggleSideBar = $(() => {
         store.isCollapsedSideBar = !store.isCollapsedSideBar
         localStorage.setItem(
@@ -72,9 +77,8 @@ export const useTheme = (store: UseThemeStore) => {
     })
 
     return {
-        setTheme,
-        loadCurrentTheme,
+        setAppTheme,
+        loadCurrentAppTheme,
         toggleSideBar,
-        initializeHighlightJSTheme,
     }
 }

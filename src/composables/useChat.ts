@@ -34,16 +34,16 @@ export const useChat = (chatStore: UseChatStore) => {
                 },
                 body: requestBody,
             })
-
             const reader = response.body?.getReader()
+            if (!reader) return
             while (true) {
-                const { done, value } = await reader?.read()
+                const { done, value } = await reader.read()
                 if (done) break
-                yield new TextDecoder().decode(value)
+                yield new TextDecoder().decode(value) as string
             }
         } catch (error) {
             console.error("Error")
-            yield error
+            yield error as Error
         }
     })
 
@@ -104,7 +104,7 @@ export const useChat = (chatStore: UseChatStore) => {
             markedHighlight({
                 async: true,
                 langPrefix: "hljs language-",
-                highlight(code, lang, info) {
+                highlight(code, _lang, _info) {
                     return hljs.highlightAuto(code).value
                 },
             })
