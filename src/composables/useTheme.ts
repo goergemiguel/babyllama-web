@@ -16,7 +16,7 @@ export const useTheme = (store: UseThemeStore) => {
         const lightThemeLink = document.createElement("link")
         lightThemeLink.rel = "stylesheet"
         lightThemeLink.href =
-            "node_modules/highlight.js/styles/tokyo-night-light.css"
+            "node_modules/highlight.js/styles/atom-one-light.css"
         lightThemeLink.id = HLJS_LIGHT_THEME_ID
 
         // Append them to the document head
