@@ -7,7 +7,7 @@ import { useThemeStore } from "~/stores/themeStore";
 export default component$(() => {
 
 	const themeStore = useThemeStore()
-	const { setTheme } = useTheme(themeStore)
+	const { setAppTheme } = useTheme(themeStore)
 
 	const currentTheme = useComputed$(() => {
 		return themeStore.currentTheme
@@ -17,13 +17,13 @@ export default component$(() => {
 		<>
 			{
 				currentTheme.value === 'light' ?
-					<IconButton onClick$={async () => await setTheme('dark')}>
+					<IconButton onClick$={async () => await setAppTheme('dark')}>
 						<SunIcon
 							class="w-6 h-auto cursor-pointer text-primary"
 						/>
 					</IconButton> :
 					<IconButton
-						onClick$={async () => await setTheme('light')}
+						onClick$={async () => await setAppTheme('light')}
 					>
 						<MoonIcon
 							class="w-6 h-auto cursor-pointer text-white"
