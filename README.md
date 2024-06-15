@@ -13,6 +13,8 @@ A UI for ollama made using Qwik
 - [x] Format code blocks from response
 - [ ] Clear History / Delete Chat
 - [ ] Copy to Clipboard
+- [ ] Edit prompt, regenerate answer
+- [ ] Option to open most recent chat
 
 ## Screenshots
 ![Screenshot 2024-06-15 at 12 51 13 AM](https://github.com/goergemiguel/babyllama-web/assets/30315323/368aeb49-9c30-4c2c-8a4c-204d96d717ab)

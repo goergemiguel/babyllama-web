@@ -1,5 +1,4 @@
-import { component$, useSignal, $, useTask$, useOnDocument } from "@builder.io/qwik";
-import { isBrowser } from "@builder.io/qwik/build"
+import { component$, useSignal, $, useOnDocument } from "@builder.io/qwik";
 import { Button, TextArea } from "~/components/ui";
 import { HiPaperAirplaneSolid as SendIcon } from "@qwikest/icons/heroicons";
 
@@ -39,23 +38,6 @@ export default component$(() => {
 		})
 	}))
 
-	const scrollToBottom = $(() => {
-		const container = document.getElementById('messages-container');
-		if (container) {
-			setTimeout(() => {
-				container.scrollTop = container.scrollHeight;
-			}, 50)
-		}
-	})
-
-	useTask$(async ({ track }) => {
-		track(() => chatStore.visibleChat)
-		if (isBrowser) {
-			await scrollToBottom()
-		}
-	})
-
-
 	const handleSendMessage = $(async () => {
 		if (!userInput.value) return
 		showTypingEffect.value = true
@@ -77,7 +59,6 @@ export default component$(() => {
 			}
 		}
 		showTypingEffect.value = false
-		await scrollToBottom()
 		if (!messageBeingTyped.value) {
 			showError.value = true
 			clearNewMessage()
@@ -88,11 +69,11 @@ export default component$(() => {
 		clearNewMessage()
 	})
 
+	// NOTE: flex-col-reverse and flex applied to messages-container to make sure always scrolled to bottom
 	return (
 		<div class="w-full h-screen flex flex-col justify-between relative bg-white dark:bg-primary">
-			<div id="messages-container" class="overflow-y-scroll pt-8 pb-28">
-				<ChatMessages conversation={chatStore.visibleChat.messages} />
-				<div class="max-w-3xl mx-auto">
+			<div id="messages-container" class="overflow-y-scroll pt-8 pb-28 flex flex-col-reverse">
+				<div class="max-w-3xl mx-auto w-full">
 					{showTypingEffect.value ?
 						<ChatBubble
 							message={{ content: messageBeingTyped.value, role: 'assistant' }}
@@ -102,6 +83,7 @@ export default component$(() => {
 						: null
 					}
 				</div>
+				<ChatMessages conversation={chatStore.visibleChat.messages} />
 			</div>
 			<div class="flex absolute bottom-0 left-0 right-0 px-16 py-4 bg-white dark:bg-primary z-99">
 				<TextArea class="w-full mr-2"
